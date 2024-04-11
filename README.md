@@ -33,7 +33,7 @@ module "vpc" {
 ## Example: subnet
 
 ```hcl
-module "subnets" {
+module "subnet" {
   source              = "cypik/subnet/aws"
   version             = "1.0.1"
   name               = "subnet"
@@ -91,7 +91,7 @@ This project is licensed under the **MIT** License - see the [LICENSE](https://g
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.44.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.32.1 |
 
 ## Modules
 
