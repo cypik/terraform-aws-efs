@@ -17,8 +17,6 @@ module "vpc" {
   cidr_block  = "172.16.0.0/16"
 }
 
-#tfsec:ignore:aws-ec2-no-excessive-port-access # Ingnored because these are basic examples, it can be changed via varibales as per requirement.
-#tfsec:ignore:aws-ec2-no-public-ingress-acl # Ingnored because these are basic examples, it can be changed via varibales as per requirement.
 module "subnets" {
   source             = "cypik/subnet/aws"
   version            = "1.0.1"

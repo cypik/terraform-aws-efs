@@ -1,7 +1,3 @@
-# Managed By : cypik
-# Description : This Script is used to create security group.
-# Copyright @ cypik. All Right Reserved.
-
 ##------------------------------------------------------------------------------
 ## Description : Terraform module to create consistent naming for multiple names.
 ##------------------------------------------------------------------------------
