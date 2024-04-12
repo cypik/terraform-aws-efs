@@ -17,7 +17,7 @@ module "vpc" {
   cidr_block  = "172.16.0.0/16"
 }
 
-module "subnet" {
+module "subnets" {
   source             = "cypik/subnet/aws"
   version            = "1.0.1"
   name               = "subnet"
@@ -38,7 +38,7 @@ module "efs" {
   creation_token            = "changeme"
   availability_zones        = local.availability_zones
   vpc_id                    = module.vpc.id
-  subnet                    = module.subnet.public_subnet_id
+  subnets                   = module.subnets.public_subnet_id
   security_groups           = [module.vpc.vpc_default_security_group_id]
   efs_backup_policy_enabled = true
   allow_cidr                = [module.vpc.vpc_cidr_block] #vpc_cidr
