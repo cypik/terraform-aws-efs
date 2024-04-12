@@ -16,37 +16,9 @@ This Terraform module creates an AWS Elastic File System (EFS) along with additi
 ## Usage
 To use this module, you can include it in your Terraform configuration. Here's an example of how to use it:
 
-## Examples
+## Example
 
-## Example: vpc
 
-```hcl
-module "vpc" {
-  source      = "cypik/vpc/aws"
-  version     = "1.0.1"
-  name        = "vpc"
-  environment = local.environment
-  label_order = local.label_order
-  cidr_block  = "172.16.0.0/16"
-}
-```
-## Example: subnet
-
-```hcl
-module "subnet" {
-  source             = "cypik/subnet/aws"
-  version            = "1.0.1"
-  name               = "subnet"
-  environment        = local.environment
-  label_order        = local.label_order
-  availability_zones = local.availability_zones
-  vpc_id             = module.vpc.id
-  cidr_block         = module.vpc.vpc_cidr_block
-  type               = "public"
-  igw_id             = module.vpc.igw_id
-  ipv6_cidr_block    = module.vpc.ipv6_cidr_block
-}
-```
 ## Example: efs
 
 ```hcl
@@ -58,7 +30,7 @@ module "efs" {
   creation_token            = "changeme"
   availability_zones        = local.availability_zones
   vpc_id                    = module.vpc.id
-  subnet                   = module.subnet.public_subnet_id
+  subnet                    = module.subnet.public_subnet_id
   security_groups           = [module.vpc.vpc_default_security_group_id]
   efs_backup_policy_enabled = true
   allow_cidr                = [module.vpc.vpc_cidr_block] #vpc_cidr
