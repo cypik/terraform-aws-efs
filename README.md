@@ -1,6 +1,6 @@
-# Terraform-aws-eks
+# Terraform-aws-efs
 
-# Terraform AWS Cloud EKS Module
+# Terraform AWS Cloud EFS Module
 
 ## Table of Contents
 - [Introduction](#introduction)
@@ -12,41 +12,13 @@
 - [Outputs](#outputs)
 
 ## Introduction
-This Terraform module creates an AWS Elastic Kubernetes Service (EKS) along with additional configuration options.
+This Terraform module creates an AWS Elastic File System (EFS) along with additional configuration options.
 ## Usage
 To use this module, you can include it in your Terraform configuration. Here's an example of how to use it:
 
-## Examples
+## Example
 
-## Example: vpc
 
-```hcl
-module "vpc" {
-  source      = "cypik/vpc/aws"
-  version     = "1.0.1"
-  name        = "vpc"
-  environment = local.environment
-  label_order = local.label_order
-  cidr_block  = "172.16.0.0/16"
-}
-```
-## Example: subnet
-
-```hcl
-module "subnets" {
-  source              = "cypik/subnet/aws"
-  version             = "1.0.1"
-  name               = "subnet"
-  environment        = local.environment
-  label_order        = local.label_order
-  availability_zones = local.availability_zones
-  vpc_id             = module.vpc.id
-  cidr_block         = module.vpc.vpc_cidr_block
-  type               = "public"
-  igw_id             = module.vpc.igw_id
-  ipv6_cidr_block    = module.vpc.ipv6_cidr_block
-}
-```
 ## Example: efs
 
 ```hcl
@@ -91,7 +63,7 @@ This project is licensed under the **MIT** License - see the [LICENSE](https://g
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.44.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.32.1 |
 
 ## Modules
 
