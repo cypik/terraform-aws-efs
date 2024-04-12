@@ -94,7 +94,7 @@ variable "vpc_id" {
   description = "VPC ID"
 }
 
-variable "subnets" {
+variable "subnet" {
   type        = list(string)
   sensitive   = true
   description = "Subnet IDs"

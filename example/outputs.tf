@@ -4,12 +4,12 @@ output "vpc_id" {
 }
 
 output "public_subnet_cidrs" {
-  value       = module.subnets.public_subnet_cidrs
+  value       = module.subnet.public_subnet_cidrs
   description = "The CIDR of the subnet."
 }
 
 output "private_subnet_cidrs" {
-  value       = module.subnets.private_subnet_cidrs
+  value       = module.subnet.private_subnet_cidrs
   description = "The CIDR of the subnet."
 }
 

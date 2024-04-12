@@ -1,6 +1,6 @@
-# Terraform-aws-eks
+# Terraform-aws-efs
 
-# Terraform AWS Cloud EKS Module
+# Terraform AWS Cloud EFS Module
 
 ## Table of Contents
 - [Introduction](#introduction)
@@ -12,7 +12,7 @@
 - [Outputs](#outputs)
 
 ## Introduction
-This Terraform module creates an AWS Elastic Kubernetes Service (EKS) along with additional configuration options.
+This Terraform module creates an AWS Elastic File System (EFS) along with additional configuration options.
 ## Usage
 To use this module, you can include it in your Terraform configuration. Here's an example of how to use it:
 
@@ -34,8 +34,8 @@ module "vpc" {
 
 ```hcl
 module "subnet" {
-  source              = "cypik/subnet/aws"
-  version             = "1.0.1"
+  source             = "cypik/subnet/aws"
+  version            = "1.0.1"
   name               = "subnet"
   environment        = local.environment
   label_order        = local.label_order
@@ -58,7 +58,7 @@ module "efs" {
   creation_token            = "changeme"
   availability_zones        = local.availability_zones
   vpc_id                    = module.vpc.id
-  subnets                   = module.subnets.public_subnet_id
+  subnet                   = module.subnet.public_subnet_id
   security_groups           = [module.vpc.vpc_default_security_group_id]
   efs_backup_policy_enabled = true
   allow_cidr                = [module.vpc.vpc_cidr_block] #vpc_cidr
@@ -147,7 +147,7 @@ This project is licensed under the **MIT** License - see the [LICENSE](https://g
 | <a name="input_replication_enabled"></a> [replication\_enabled](#input\_replication\_enabled) | Set to false to prevent the module from creating any resources | `bool` | `true` | no |
 | <a name="input_security_groups"></a> [security\_groups](#input\_security\_groups) | Security group IDs to allow access to the EFS | `list(string)` | n/a | yes |
 | <a name="input_source_policy_documents"></a> [source\_policy\_documents](#input\_source\_policy\_documents) | List of IAM policy documents that are merged together into the exported document. Statements must have unique `sid`s | `list(string)` | `[]` | no |
-| <a name="input_subnets"></a> [subnets](#input\_subnets) | Subnet IDs | `list(string)` | n/a | yes |
+| <a name="input_subnet"></a> [subnet](#input\_subnet) | Subnet IDs | `list(string)` | n/a | yes |
 | <a name="input_throughput_mode"></a> [throughput\_mode](#input\_throughput\_mode) | Throughput mode for the file system. Defaults to bursting. Valid values: `bursting`, `provisioned`. When using `provisioned`, also set `provisioned_throughput_in_mibps` | `string` | `"bursting"` | no |
 | <a name="input_to_port"></a> [to\_port](#input\_to\_port) | Security group IDs to allow access to the EFS | `number` | `2049` | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | VPC ID | `string` | n/a | yes |
