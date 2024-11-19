@@ -57,8 +57,3 @@ output "security_group_name" {
   value       = aws_security_group.default[0].name
   description = "The name of the security group."
 }
-#output "subnets_az_map" {
-#  value = {
-#  for az, subnet in zip(var.availability_zones, var.subnets) : az => subnet
-#  }
-#}

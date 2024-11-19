@@ -1,7 +1,6 @@
 ##------------------------------------------------------------------------------
 ## Description : Terraform module to create consistent naming for multiple names.
 ##------------------------------------------------------------------------------
-
 module "labels" {
   source      = "cypik/labels/aws"
   version     = "1.0.2"
@@ -117,7 +116,6 @@ resource "aws_efs_access_point" "default" {
 ##------------------------------------------------------------------------------
 ## Replication Configuration
 ##------------------------------------------------------------------------------
-
 resource "aws_efs_replication_configuration" "this" {
   count = var.efs_enabled && var.replication_enabled ? 1 : 0
 
