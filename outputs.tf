@@ -1,5 +1,7 @@
-#Module      : EFS
-#Description : Terraform efs module output.
+# Module: EFS
+# Description: Terraform efs module output.
+
+# EFS File System Outputs
 output "arn" {
   value       = join("", aws_efs_file_system.default[*].arn)
   description = "EFS ARN"
@@ -10,15 +12,19 @@ output "id" {
   description = "EFS ID"
 }
 
-output "mount_target_ids" {
-  value       = [coalescelist(aws_efs_mount_target.default[*].id, [""])]
-  description = "List of EFS mount target IDs (one per Availability Zone)"
+output "efs_file_system_id" {
+  value       = aws_efs_file_system.default[0].id
+  description = "The ID of the EFS file system."
 }
 
-output "mount_target_ips" {
-  sensitive   = true
-  value       = [coalescelist(aws_efs_mount_target.default[*].ip_address, [""])]
-  description = "List of EFS mount target IPs (one per Availability Zone)"
+output "efs_arn" {
+  value       = aws_efs_file_system.default[0].arn
+  description = "The ARN of the EFS file system."
+}
+
+output "efs_dns_name" {
+  value       = aws_efs_file_system.default[0].dns_name
+  description = "The DNS name of the EFS file system."
 }
 
 output "network_interface_ids" {
@@ -26,8 +32,33 @@ output "network_interface_ids" {
   description = "List of mount target network interface IDs"
 }
 
+# Security Group Outputs
 output "tags" {
   value       = module.labels.tags
-  description = "The tags of the ecs cluster"
-
+  description = "The tags of the EFS resource"
 }
+
+output "security_group_id" {
+  value       = aws_security_group.default[0].id
+  description = "The ID of the security group."
+}
+
+output "availability_zones" {
+  value       = var.availability_zones
+  description = "Availability Zones for mount targets"
+}
+
+output "security_group_arn" {
+  value       = aws_security_group.default[0].arn
+  description = "The ARN of the security group."
+}
+
+output "security_group_name" {
+  value       = aws_security_group.default[0].name
+  description = "The name of the security group."
+}
+#output "subnets_az_map" {
+#  value = {
+#  for az, subnet in zip(var.availability_zones, var.subnets) : az => subnet
+#  }
+#}

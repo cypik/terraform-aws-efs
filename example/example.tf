@@ -10,7 +10,7 @@ locals {
 
 module "vpc" {
   source      = "cypik/vpc/aws"
-  version     = "1.0.1"
+  version     = "1.0.2"
   name        = "vpc"
   environment = local.environment
   label_order = local.label_order
@@ -19,12 +19,12 @@ module "vpc" {
 
 module "subnets" {
   source             = "cypik/subnet/aws"
-  version            = "1.0.1"
+  version            = "v1.0.3"
   name               = "subnet"
   environment        = local.environment
   label_order        = local.label_order
   availability_zones = local.availability_zones
-  vpc_id             = module.vpc.id
+  vpc_id             = module.vpc.vpc_id
   cidr_block         = module.vpc.vpc_cidr_block
   type               = "public"
   igw_id             = module.vpc.igw_id
@@ -37,7 +37,7 @@ module "efs" {
   environment               = "test"
   creation_token            = "changeme"
   availability_zones        = local.availability_zones
-  vpc_id                    = module.vpc.id
+  vpc_id                    = module.vpc.vpc_id
   subnets                   = module.subnets.public_subnet_id
   security_groups           = [module.vpc.vpc_default_security_group_id]
   efs_backup_policy_enabled = true

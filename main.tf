@@ -3,9 +3,8 @@
 ##------------------------------------------------------------------------------
 
 module "labels" {
-  source  = "cypik/labels/aws"
-  version = "1.0.1"
-
+  source      = "cypik/labels/aws"
+  version     = "1.0.2"
   name        = var.name
   environment = var.environment
   label_order = var.label_order
@@ -31,11 +30,11 @@ resource "aws_efs_file_system" "default" {
 ## Description : Provides an Elastic File System (EFS) mount target.
 ##------------------------------------------------------------------------------
 resource "aws_efs_mount_target" "default" {
-  count           = var.efs_enabled && length(var.availability_zones) > 0 ? length(var.availability_zones) : 0
-  file_system_id  = join("", aws_efs_file_system.default[*].id)
-  ip_address      = var.mount_target_ip_address
+  count = var.enable_mount_target ? length(var.subnets) : 0
+
+  file_system_id  = aws_efs_file_system.default[0].id # Access first instance
   subnet_id       = var.subnets[count.index]
-  security_groups = [join("", aws_security_group.default[*].id)]
+  security_groups = var.security_groups
 }
 
 ##------------------------------------------------------------------------------
@@ -96,8 +95,23 @@ resource "aws_efs_backup_policy" "policy" {
 resource "aws_efs_access_point" "default" {
   count          = var.efs_enabled && var.access_point_enabled ? 1 : 0
   file_system_id = join("", aws_efs_file_system.default[*].id)
+  tags           = module.labels.tags
 
-  tags = module.labels.tags
+  posix_user {
+    uid            = var.access_point_uid
+    gid            = var.access_point_gid
+    secondary_gids = var.access_point_secondary_gids
+  }
+
+  root_directory {
+    path = var.root_directory_path
+
+    creation_info {
+      owner_uid   = var.creation_owner_uid
+      owner_gid   = var.creation_owner_gid
+      permissions = var.creation_permissions
+    }
+  }
 }
 
 ##------------------------------------------------------------------------------

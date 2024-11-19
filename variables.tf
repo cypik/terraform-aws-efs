@@ -20,8 +20,8 @@ variable "label_order" {
 
 variable "managedby" {
   type        = string
-  default     = "hello@cypik.com"
-  description = "ManagedBy, eg 'cypik'."
+  default     = "info@cypik.com"
+  description = "ManagedBy, eg 'info@cypik.com'."
 }
 
 # Module      : EFS
@@ -90,20 +90,13 @@ variable "creation_token" {
 
 variable "vpc_id" {
   type        = string
-  sensitive   = true
-  description = "VPC ID"
-}
-
-variable "subnets" {
-  type        = list(string)
-  sensitive   = true
-  description = "Subnet IDs"
+  description = "The VPC ID where subnets will be created"
 }
 
 variable "availability_zones" {
   type        = list(string)
   sensitive   = true
-  description = "Availability Zone IDs"
+  description = "List of availability zones for subnets"
 }
 
 variable "encrypted" {
@@ -133,11 +126,10 @@ variable "throughput_mode" {
 
 }
 
-variable "mount_target_ip_address" {
+variable "enable_mount_target" {
   type        = string
-  default     = null
-  sensitive   = true
-  description = "The address (within the address range of the specified subnet) at which the file system may be mounted via the mount target"
+  default     = true
+  description = "Set to false to disable mount targets"
 }
 
 variable "kms_key_id" {
@@ -170,43 +162,92 @@ variable "mount_target_description" {
 }
 
 variable "bypass_policy_lockout_safety_check" {
-  description = "A flag to indicate whether to bypass the `aws_efs_file_system_policy` lockout safety check. Defaults to `false`"
   type        = bool
   default     = false
+  description = "A flag to indicate whether to bypass the `aws_efs_file_system_policy` lockout safety check. Defaults to `false`"
 }
 
 variable "enable_aws_efs_file_system_policy" {
-  description = "A flag to enable or disable aws efs file system policy . Defaults to `false`"
   type        = bool
   default     = false
+  description = "A flag to enable or disable aws efs file system policy . Defaults to `false`"
 }
 
 variable "replication_configuration_destination" {
-  description = "A destination configuration block"
   type        = any
   default     = {}
+  description = "A destination configuration block"
 }
 
 variable "source_policy_documents" {
-  description = "List of IAM policy documents that are merged together into the exported document. Statements must have unique `sid`s"
   type        = list(string)
   default     = []
+  description = "List of IAM policy documents that are merged together into the exported document. Statements must have unique `sid`s"
 }
 
 variable "override_policy_documents" {
-  description = "List of IAM policy documents that are merged together into the exported document. In merging, statements with non-blank `sid`s will override statements with the same `sid`"
   type        = list(string)
   default     = []
+  description = "List of IAM policy documents that are merged together into the exported document. In merging, statements with non-blank `sid`s will override statements with the same `sid`"
 }
 
 variable "policy_statements" {
-  description = "A list of IAM policy [statements](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document#statement) for custom permission usage"
   type        = any
   default     = []
+  description = "A list of IAM policy [statements](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document#statement) for custom permission usage"
 }
 
 variable "deny_nonsecure_transport" {
-  description = "Determines whether `aws:SecureTransport` is required when connecting to elastic file system"
   type        = bool
   default     = false
+  description = "Determines whether `aws:SecureTransport` is required when connecting to elastic file system"
+}
+
+variable "access_point_secondary_gids" {
+  type        = list(number)
+  default     = []
+  description = "A list of secondary group IDs for the POSIX user for the access point."
+}
+
+variable "creation_permissions" {
+  type        = string
+  default     = "755" # You can set a default value if appropriate
+  description = "Permissions for the root directory of the EFS access point."
+}
+
+variable "access_point_uid" {
+  type        = number
+  default     = 1001 # Change as necessary
+  description = "User ID for the EFS access point."
+}
+
+variable "creation_owner_gid" {
+  type        = number
+  default     = 1001 # Change as necessary
+  description = "Group ID for the owner of the EFS access point."
+}
+
+variable "creation_owner_uid" {
+  type        = number
+  default     = 1000 # Change as necessary
+  description = "User ID for the owner of the EFS root directory."
+}
+
+variable "access_point_gid" {
+  type        = number
+  default     = 1001 # Change as necessary
+  description = "Group ID for the EFS access point."
+}
+
+variable "root_directory_path" {
+  type        = string
+  default     = "/" # Change as necessary
+  description = "Root directory path for the EFS access point."
+}
+
+variable "subnets" {
+  type        = list(string)
+  default     = []
+  description = "List of subnet IDs for mount targets"
+
 }
