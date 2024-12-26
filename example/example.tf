@@ -1,16 +1,16 @@
 provider "aws" {
-  region = "us-east-1"
+  region = "us-east-2"
 }
 
 locals {
   environment        = "test"
   label_order        = ["name", "environment"]
-  availability_zones = ["us-east-1a", "us-east-1b"]
+  availability_zones = ["us-east-2a", "us-east-2b"]
 }
 
 module "vpc" {
   source      = "cypik/vpc/aws"
-  version     = "1.0.1"
+  version     = "1.0.2"
   name        = "vpc"
   environment = local.environment
   label_order = local.label_order
@@ -19,12 +19,12 @@ module "vpc" {
 
 module "subnets" {
   source             = "cypik/subnet/aws"
-  version            = "1.0.1"
+  version            = "v1.0.3"
   name               = "subnet"
   environment        = local.environment
   label_order        = local.label_order
   availability_zones = local.availability_zones
-  vpc_id             = module.vpc.id
+  vpc_id             = module.vpc.vpc_id
   cidr_block         = module.vpc.vpc_cidr_block
   type               = "public"
   igw_id             = module.vpc.igw_id
@@ -37,11 +37,11 @@ module "efs" {
   environment               = "test"
   creation_token            = "changeme"
   availability_zones        = local.availability_zones
-  vpc_id                    = module.vpc.id
-  subnets                   = module.subnets.public_subnet_id
+  vpc_id                    = module.vpc.vpc_id
+  subnet_ids                = module.subnets.public_subnet_id
   security_groups           = [module.vpc.vpc_default_security_group_id]
   efs_backup_policy_enabled = true
-  allow_cidr                = [module.vpc.vpc_cidr_block] #vpc_cidr
+  allow_cidr                = [module.vpc.vpc_cidr_block]
   replication_enabled       = true
   replication_configuration_destination = {
     region                 = "eu-west-2"
