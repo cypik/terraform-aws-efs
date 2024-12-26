@@ -123,13 +123,18 @@ variable "throughput_mode" {
   type        = string
   default     = "bursting"
   description = "Throughput mode for the file system. Defaults to bursting. Valid values: `bursting`, `provisioned`. When using `provisioned`, also set `provisioned_throughput_in_mibps`"
-
 }
 
-variable "enable_mount_target" {
+variable "mount_target_ip_address" {
   type        = string
-  default     = true
-  description = "Set to false to disable mount targets"
+  default     = null
+  sensitive   = true
+  description = "The address (within the address range of the specified subnet) at which the file system may be mounted via the mount target"
+}
+
+variable "subnet_ids" {
+  description = "List of subnet IDs, one for each availability zone."
+  type        = list(string)
 }
 
 variable "kms_key_id" {
@@ -243,11 +248,4 @@ variable "root_directory_path" {
   type        = string
   default     = "/" # Change as necessary
   description = "Root directory path for the EFS access point."
-}
-
-variable "subnets" {
-  type        = list(string)
-  default     = []
-  description = "List of subnet IDs for mount targets"
-
 }

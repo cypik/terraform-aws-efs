@@ -32,6 +32,11 @@ output "network_interface_ids" {
   description = "List of mount target network interface IDs"
 }
 
+output "efs_mount_target_ids" {
+  value     = aws_efs_mount_target.default[*].id
+  sensitive = true
+}
+
 # Security Group Outputs
 output "tags" {
   value       = module.labels.tags

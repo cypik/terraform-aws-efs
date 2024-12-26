@@ -29,11 +29,11 @@ resource "aws_efs_file_system" "default" {
 ## Description : Provides an Elastic File System (EFS) mount target.
 ##------------------------------------------------------------------------------
 resource "aws_efs_mount_target" "default" {
-  count = var.enable_mount_target ? length(var.subnets) : 0
-
-  file_system_id  = aws_efs_file_system.default[0].id # Access first instance
-  subnet_id       = var.subnets[count.index]
-  security_groups = var.security_groups
+  count           = var.efs_enabled && length(var.availability_zones) > 0 ? length(var.availability_zones) : 0
+  file_system_id  = join("", aws_efs_file_system.default[*].id)
+  subnet_id       = var.subnet_ids[count.index] # Assuming var.subnet_ids is a list of subnet IDs
+  ip_address      = var.mount_target_ip_address
+  security_groups = [join("", aws_security_group.default[*].id)]
 }
 
 ##------------------------------------------------------------------------------

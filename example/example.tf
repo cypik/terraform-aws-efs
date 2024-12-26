@@ -1,11 +1,11 @@
 provider "aws" {
-  region = "us-east-1"
+  region = "us-east-2"
 }
 
 locals {
   environment        = "test"
   label_order        = ["name", "environment"]
-  availability_zones = ["us-east-1a", "us-east-1b"]
+  availability_zones = ["us-east-2a", "us-east-2b"]
 }
 
 module "vpc" {
@@ -38,10 +38,10 @@ module "efs" {
   creation_token            = "changeme"
   availability_zones        = local.availability_zones
   vpc_id                    = module.vpc.vpc_id
-  subnets                   = module.subnets.public_subnet_id
+  subnet_ids                = module.subnets.public_subnet_id
   security_groups           = [module.vpc.vpc_default_security_group_id]
   efs_backup_policy_enabled = true
-  allow_cidr                = [module.vpc.vpc_cidr_block] #vpc_cidr
+  allow_cidr                = [module.vpc.vpc_cidr_block]
   replication_enabled       = true
   replication_configuration_destination = {
     region                 = "eu-west-2"

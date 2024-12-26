@@ -36,8 +36,8 @@ module "efs" {
   allow_cidr                = [module.vpc.vpc_cidr_block] #vpc_cidr
   replication_enabled       = true
   replication_configuration_destination = {
-    region                 = "eu-west-2"
-    availability_zone_name = ["eu-west-2a", "eu-west-2b"]
+    region                 = "us-east-2"
+    availability_zone_name = ["us-east-2a", "us-east-2b"]
   }
 }
 ```
@@ -57,13 +57,13 @@ This project is licensed under the **MIT** License - see the [LICENSE](https://g
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.5 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >=5.67.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.82.2 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >=5.67.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 5.82.2 |
 
 ## Modules
 
@@ -107,7 +107,6 @@ This project is licensed under the **MIT** License - see the [LICENSE](https://g
 | <a name="input_egress_protocol"></a> [egress\_protocol](#input\_egress\_protocol) | Security group IDs to allow access to the EFS | `number` | `-1` | no |
 | <a name="input_egress_to_port"></a> [egress\_to\_port](#input\_egress\_to\_port) | Security group IDs to allow access to the EFS | `number` | `0` | no |
 | <a name="input_enable_aws_efs_file_system_policy"></a> [enable\_aws\_efs\_file\_system\_policy](#input\_enable\_aws\_efs\_file\_system\_policy) | A flag to enable or disable aws efs file system policy . Defaults to `false` | `bool` | `false` | no |
-| <a name="input_enable_mount_target"></a> [enable\_mount\_target](#input\_enable\_mount\_target) | Set to false to disable mount targets | `string` | `true` | no |
 | <a name="input_encrypted"></a> [encrypted](#input\_encrypted) | If true, the file system will be encrypted | `bool` | `true` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment (e.g. `prod`, `dev`, `staging`). | `string` | `"test"` | no |
 | <a name="input_from_port"></a> [from\_port](#input\_from\_port) | Security group IDs to allow access to the EFS | `number` | `2049` | no |
@@ -115,6 +114,7 @@ This project is licensed under the **MIT** License - see the [LICENSE](https://g
 | <a name="input_label_order"></a> [label\_order](#input\_label\_order) | label order, e.g. `name`,`application` | `list(any)` | <pre>[<br>  "name",<br>  "environment"<br>]</pre> | no |
 | <a name="input_managedby"></a> [managedby](#input\_managedby) | ManagedBy, eg 'info@cypik.com'. | `string` | `"info@cypik.com"` | no |
 | <a name="input_mount_target_description"></a> [mount\_target\_description](#input\_mount\_target\_description) | n/a | `string` | `"this is mount target security group "` | no |
+| <a name="input_mount_target_ip_address"></a> [mount\_target\_ip\_address](#input\_mount\_target\_ip\_address) | The address (within the address range of the specified subnet) at which the file system may be mounted via the mount target | `string` | `null` | no |
 | <a name="input_name"></a> [name](#input\_name) | Solution name, e.g. `app` | `string` | `""` | no |
 | <a name="input_override_policy_documents"></a> [override\_policy\_documents](#input\_override\_policy\_documents) | List of IAM policy documents that are merged together into the exported document. In merging, statements with non-blank `sid`s will override statements with the same `sid` | `list(string)` | `[]` | no |
 | <a name="input_performance_mode"></a> [performance\_mode](#input\_performance\_mode) | The file system performance mode. Can be either `generalPurpose` or `maxIO` | `string` | `"generalPurpose"` | no |
@@ -126,6 +126,7 @@ This project is licensed under the **MIT** License - see the [LICENSE](https://g
 | <a name="input_root_directory_path"></a> [root\_directory\_path](#input\_root\_directory\_path) | Root directory path for the EFS access point. | `string` | `"/"` | no |
 | <a name="input_security_groups"></a> [security\_groups](#input\_security\_groups) | Security group IDs to allow access to the EFS | `list(string)` | n/a | yes |
 | <a name="input_source_policy_documents"></a> [source\_policy\_documents](#input\_source\_policy\_documents) | List of IAM policy documents that are merged together into the exported document. Statements must have unique `sid`s | `list(string)` | `[]` | no |
+| <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | List of subnet IDs, one for each availability zone. | `list(string)` | n/a | yes |
 | <a name="input_subnets"></a> [subnets](#input\_subnets) | List of subnet IDs for mount targets | `list(string)` | `[]` | no |
 | <a name="input_throughput_mode"></a> [throughput\_mode](#input\_throughput\_mode) | Throughput mode for the file system. Defaults to bursting. Valid values: `bursting`, `provisioned`. When using `provisioned`, also set `provisioned_throughput_in_mibps` | `string` | `"bursting"` | no |
 | <a name="input_to_port"></a> [to\_port](#input\_to\_port) | Security group IDs to allow access to the EFS | `number` | `2049` | no |
@@ -140,6 +141,7 @@ This project is licensed under the **MIT** License - see the [LICENSE](https://g
 | <a name="output_efs_arn"></a> [efs\_arn](#output\_efs\_arn) | The ARN of the EFS file system. |
 | <a name="output_efs_dns_name"></a> [efs\_dns\_name](#output\_efs\_dns\_name) | The DNS name of the EFS file system. |
 | <a name="output_efs_file_system_id"></a> [efs\_file\_system\_id](#output\_efs\_file\_system\_id) | The ID of the EFS file system. |
+| <a name="output_efs_mount_target_ids"></a> [efs\_mount\_target\_ids](#output\_efs\_mount\_target\_ids) | n/a |
 | <a name="output_id"></a> [id](#output\_id) | EFS ID |
 | <a name="output_network_interface_ids"></a> [network\_interface\_ids](#output\_network\_interface\_ids) | List of mount target network interface IDs |
 | <a name="output_security_group_arn"></a> [security\_group\_arn](#output\_security\_group\_arn) | The ARN of the security group. |
