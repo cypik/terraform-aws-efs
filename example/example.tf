@@ -1,16 +1,16 @@
 provider "aws" {
-  region = "us-east-2"
+  region = "eu-west-2"
 }
 
 locals {
   environment        = "test"
   label_order        = ["name", "environment"]
-  availability_zones = ["us-east-2a", "us-east-2b"]
+  availability_zones = ["eu-west-2a", "eu-west-2b"]
 }
 
 module "vpc" {
   source      = "cypik/vpc/aws"
-  version     = "1.0.2"
+  version     = "1.0.3"
   name        = "vpc"
   environment = local.environment
   label_order = local.label_order
@@ -32,10 +32,10 @@ module "subnets" {
 }
 
 module "efs" {
-  source                    = "./.."
+  source                    = "./../"
   name                      = "efs"
-  environment               = "test"
-  creation_token            = "changeme"
+  environment               = local.environment
+  creation_token            = "efs-${local.environment}-token"
   availability_zones        = local.availability_zones
   vpc_id                    = module.vpc.vpc_id
   subnet_ids                = module.subnets.public_subnet_id
