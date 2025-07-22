@@ -24,20 +24,20 @@ To use this module, you can include it in your Terraform configuration. Here's a
 ```hcl
 module "efs" {
   source                    = "cypik/efs/aws"
-  version                   = "1.0.1"
+  version                   = "1.0.3"
   name                      = "efs"
-  environment               = "test"
-  creation_token            = "changeme"
+  environment               = local.environment
+  creation_token            = "efs-${local.environment}-token"
   availability_zones        = local.availability_zones
-  vpc_id                    = module.vpc.id
-  subnets                   = module.subnets.public_subnet_id
+  vpc_id                    = module.vpc.vpc_id
+  subnet_ids                = module.subnets.public_subnet_id
   security_groups           = [module.vpc.vpc_default_security_group_id]
   efs_backup_policy_enabled = true
-  allow_cidr                = [module.vpc.vpc_cidr_block] #vpc_cidr
+  allow_cidr                = [module.vpc.vpc_cidr_block]
   replication_enabled       = true
   replication_configuration_destination = {
-    region                 = "us-east-2"
-    availability_zone_name = ["us-east-2a", "us-east-2b"]
+    region                 = "eu-west-2"
+    availability_zone_name = ["eu-west-2a", "eu-west-2b"]
   }
 }
 ```
@@ -56,14 +56,15 @@ This project is licensed under the **MIT** License - see the [LICENSE](https://g
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.5 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.82.2 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.12.1 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 6.2.0 |
+| <a name="requirement_tls"></a> [tls](#requirement\_tls) | >= 4.1.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 5.82.2 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 6.2.0 |
 
 ## Modules
 
