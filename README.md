@@ -24,7 +24,7 @@ To use this module, you can include it in your Terraform configuration. Here's a
 ```hcl
 module "efs" {
   source                    = "cypik/efs/aws"
-  version                   = "1.0.3"
+  version                   = "1.0.2"
   name                      = "efs"
   environment               = local.environment
   creation_token            = "efs-${local.environment}-token"
