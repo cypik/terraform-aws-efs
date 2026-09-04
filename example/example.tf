@@ -10,7 +10,7 @@ locals {
 
 module "vpc" {
   source      = "cypik/vpc/aws"
-  version     = "1.0.3"
+  version     = "1.0.5"
   name        = "vpc"
   environment = local.environment
   label_order = local.label_order
@@ -19,7 +19,7 @@ module "vpc" {
 
 module "subnets" {
   source             = "cypik/subnet/aws"
-  version            = "v1.0.3"
+  version            = "1.0.7"
   name               = "subnet"
   environment        = local.environment
   label_order        = local.label_order

@@ -31,6 +31,7 @@ output "efs_id" {
 output "efs_mount_target_ids" {
   value       = module.efs.efs_mount_target_ids
   description = "List of EFS mount target IDs (one per Availability Zone)"
+  sensitive   = true
 }
 
 output "efs_network_interface_ids" {
